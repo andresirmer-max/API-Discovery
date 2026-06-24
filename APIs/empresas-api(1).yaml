@@ -1,0 +1,1735 @@
+swagger: '2.0'
+info:
+  version: 1.0.1
+  title: empresas-api
+  description: Ws de empresas
+  contact: {}
+  x-ibm-name: empresas-api
+basePath: /empresas-api/v1
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /actuator/health:
+    get:
+      responses:
+        '200':
+          description: success
+          schema:
+            type: string
+      security:
+        - clientIdHeader: []
+      consumes: []
+      produces: []
+  /interpretador/actualizarCache:
+    put:
+      description: ''
+      summary: putActualizarCache
+      tags:
+        - interpretador-controller
+      operationId: putActualizarCache
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: default response
+          headers: {}
+  '/interpretador/barra/{barra}':
+    get:
+      description: ''
+      summary: interpretarBarra
+      tags:
+        - interpretador-controller
+      operationId: interpretarBarra
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: barra
+          in: path
+          required: true
+          type: string
+          description: ''
+        - name: requestParams
+          in: query
+          required: false
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: default response
+          schema:
+            type: object
+          headers: {}
+  /interpretador/barra-lote:
+    post:
+      description: ''
+      summary: interpretarBarras
+      tags:
+        - interpretador-controller
+      operationId: interpretarBarras
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: false
+          description: ''
+          schema:
+            $ref: '#/definitions/BarraLoteRequest'
+      responses:
+        '200':
+          description: default response
+          schema:
+            type: object
+          headers: {}
+  '/empresas/{codEmpresa}/modalidades':
+    get:
+      description: ''
+      summary: getModalidadesByEmpresa
+      tags:
+        - empresas-controller
+      operationId: getModalidadesByEmpresa
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: idAgenteSucursal
+          in: query
+          required: false
+          type: string
+          description: ''
+        - name: codEmpresa
+          in: path
+          required: true
+          type: string
+          description: ''
+        - name: tipoCobranza
+          in: query
+          required: false
+          type: array
+          items:
+            type: string
+          description: ''
+        - name: formaPago
+          in: query
+          required: false
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: >-
+            Obtiene las modalidades de una empresa, aplicando la cobertura según
+            las formas de pago habilitadas
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ModalidadEmpresa'
+          headers: {}
+  /empresas/central:
+    get:
+      description: >-
+        Obtiene las empresas centrales por codigo de empresa central o parte de
+        su descripcion
+      summary: getEmpresaByCodigoAndDescripcionSF
+      tags:
+        - empresas-controller
+      operationId: getEmpresaByCodigoAndDescripcionSF
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: codigo
+          in: query
+          required: false
+          type: integer
+          format: int32
+          description: ''
+        - name: descripcion
+          in: query
+          required: false
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: Retorna código y denominación
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/EmpresaCentralDtoResponse'
+          headers: {}
+  /empresas/descripcion:
+    get:
+      description: ''
+      summary: getEmpresasHabilitadas
+      tags:
+        - empresas-controller
+      operationId: getEmpresasHabilitadas
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: descEmpresa
+          in: query
+          required: false
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: default response
+          schema:
+            $ref: '#/definitions/SucEmpHabDto'
+          headers: {}
+  /empresas/recarga:
+    get:
+      description: ''
+      summary: getEmpresasRecargasHabilitadasSucursal
+      tags:
+        - empresas-controller
+      operationId: getEmpresasRecargasHabilitadasSucursal
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: idAgenteSucursal
+          in: query
+          required: true
+          type: string
+          description: ''
+        - name: formaPago
+          in: query
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: default response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/EmpresaRecarga'
+          headers: {}
+  /empresas:
+    get:
+      description: ''
+      summary: getEmpresasHabilitadasSucursal
+      tags:
+        - empresas-controller
+      operationId: getEmpresasHabilitadasSucursal
+      deprecated: false
+      produces:
+        - application/stream+json
+      parameters:
+        - name: idAgenteSucursal
+          in: query
+          required: false
+          type: string
+          description: ''
+        - name: tipoCobranza
+          in: query
+          required: false
+          type: array
+          items:
+            type: string
+          description: ''
+        - name: searchString
+          in: query
+          required: false
+          type: string
+          description: ''
+        - name: codTipoValor
+          in: query
+          required: false
+          type: string
+          description: ''
+        - name: codPuesto
+          in: query
+          required: false
+          type: string
+          description: ''
+        - name: idModalidad
+          in: query
+          required: false
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: default response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/EmpresaFactura'
+          headers: {}
+  /empresas/updateAllEmpresas:
+    put:
+      description: ''
+      summary: updateAllEmpresas
+      tags:
+        - empresas-controller
+      operationId: updateAllEmpresas
+      deprecated: false
+      produces:
+        - text/plain
+      parameters: []
+      responses:
+        '200':
+          description: default response
+          schema:
+            type: string
+          headers: {}
+  '/empresas/{id}':
+    get:
+      description: ''
+      summary: getEmpresa
+      tags:
+        - empresas-controller
+      operationId: getEmpresa
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: default response
+          schema:
+            $ref: '#/definitions/EmpresaDto'
+          headers: {}
+  '/modalidades/{id}':
+    get:
+      description: ''
+      summary: getModalidad
+      tags:
+        - empresas-controller
+      operationId: getModalidad
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: default response
+          schema:
+            type: object
+          headers: {}
+  '/empresas/modalidad/{idModalidad}':
+    get:
+      description: ''
+      summary: getEmpresaByModalidad
+      tags:
+        - empresas-controller
+      operationId: getEmpresaByModalidad
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: idModalidad
+          in: path
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: default response
+          schema:
+            $ref: '#/definitions/EmpresaDto'
+          headers: {}
+  /monedas:
+    get:
+      description: ''
+      summary: getMonedas
+      tags:
+        - tipo-valor-controller
+      operationId: getMonedas
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: default response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MonedaEP'
+          headers: {}
+  /tiposValor:
+    get:
+      description: ''
+      summary: getTiposValor
+      tags:
+        - tipo-valor-controller
+      operationId: getTiposValor
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: default response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TipoValorEP'
+          headers: {}
+  /facturasSimples/interpretarBarra:
+    get:
+      description: Interpretacion de barra CLR
+      summary: interpretarBarraLecturaRapida
+      tags:
+        - facturas-controller
+      operationId: interpretarBarraLecturaRapida
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: barra
+          in: query
+          required: true
+          type: string
+          description: ''
+        - name: codEmpresa
+          in: query
+          required: false
+          type: string
+          description: ''
+        - name: idEmpresa
+          in: query
+          required: false
+          type: string
+          description: ''
+        - name: idSucursal
+          in: query
+          required: true
+          type: string
+          description: ''
+        - name: fecha
+          in: query
+          required: true
+          type: string
+          description: ''
+        - name: tipoCobranza
+          in: query
+          required: false
+          type: array
+          items:
+            type: string
+          description: ''
+        - name: formaPago
+          in: query
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/FacturaSimple'
+          headers: {}
+        '400':
+          description: array of client errors
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CodedError'
+          headers: {}
+  '/facturasSimples/empresas/{codigo}/modalidades/{idModalidad}/consultar-facturas':
+    post:
+      description: Consulta de facturas en STO
+      summary: consultarFacturas
+      tags:
+        - facturas-controller
+      operationId: consultarFacturas
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: codigo
+          in: path
+          required: true
+          type: string
+          description: ''
+        - name: idModalidad
+          in: path
+          required: true
+          type: string
+          description: ''
+        - name: idSucursal
+          in: query
+          required: true
+          type: string
+          description: ''
+        - name: formaPago
+          in: query
+          required: true
+          type: string
+          description: ''
+        - name: fecha
+          in: query
+          required: false
+          type: string
+          description: ''
+        - name: body
+          in: body
+          required: false
+          description: ''
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/FacturaSimple'
+          headers: {}
+        '400':
+          description: array of client errors
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CodedError'
+          headers: {}
+  /facturasSimples/interpretarBarrasDeConsultaSinFactura:
+    get:
+      description: Interpretacion de barra CSF
+      summary: interpretarBarrasDeConsultaSinFactura
+      tags:
+        - facturas-controller
+      operationId: interpretarBarrasDeConsultaSinFactura
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: requestParams
+          in: query
+          required: false
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/FacturaSimple'
+          headers: {}
+        '400':
+          description: array of client errors
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CodedError'
+          headers: {}
+  /facturasSimples/validar-pago-abierto:
+    post:
+      description: Get info for payment if the request is ok.
+      summary: validar
+      tags:
+        - facturas-controller
+      operationId: validar
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: idSucursal
+          in: query
+          required: true
+          type: string
+          description: ''
+        - name: codAgente
+          in: query
+          required: true
+          type: string
+          description: ''
+        - name: body
+          in: body
+          required: false
+          description: ''
+          schema:
+            $ref: '#/definitions/PagoAbiertoRequestEP'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ValidacionResponseEP'
+          headers: {}
+        '400':
+          description: array of client errors
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CodedError'
+          headers: {}
+  /facturasSimples/validar-pago-factura:
+    post:
+      description: Get info for payment if the request is ok and not modified data of bill.
+      summary: validarConHash
+      tags:
+        - facturas-controller
+      operationId: validarConHash
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: idSucursal
+          in: query
+          required: true
+          type: string
+          description: ''
+        - name: codAgente
+          in: query
+          required: true
+          type: string
+          description: ''
+        - name: body
+          in: body
+          required: false
+          description: ''
+          schema:
+            $ref: '#/definitions/PagoFacturaRequestEP'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ValidacionResponseEP'
+          headers: {}
+        '400':
+          description: array of client errors
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CodedError'
+          headers: {}
+  '/modalidades/{idModalidad}/formulario/validarDatos':
+    put:
+      description: ''
+      summary: putValidarDatosFormulario
+      tags:
+        - formulario-factura-ausente-controller
+      operationId: putValidarDatosFormulario
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: idModalidad
+          in: path
+          required: true
+          type: string
+          description: ''
+        - name: body
+          in: body
+          required: false
+          description: ''
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+      responses:
+        '200':
+          description: default response
+          schema:
+            type: object
+          headers: {}
+  '/modalidades/{idModalidad}/formulario/descriptor':
+    get:
+      description: ''
+      summary: getFormulario
+      tags:
+        - formulario-factura-ausente-controller
+      operationId: getFormulario
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: idModalidad
+          in: path
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: Obtiene el formulario asociado a una modalidad
+          schema:
+            $ref: '#/definitions/DescriptorFormularioDto'
+          headers: {}
+  '/modalidades/{idModalidad}/obtener-cbf':
+    get:
+      description: ''
+      summary: getCbfFormularioFacturaAusente
+      tags:
+        - formulario-factura-ausente-controller
+      operationId: getCbfFormularioFacturaAusente
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: idModalidad
+          in: path
+          required: true
+          type: string
+          description: ''
+        - name: formInValues
+          in: query
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: default response
+          schema:
+            type: object
+          headers: {}
+  /iungam/empresas/descripcion:
+    get:
+      description: ''
+      summary: getEmpresasIungam
+      tags:
+        - iungam-controller
+      operationId: getEmpresasIungam
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: idAgente
+          in: query
+          required: false
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: default response
+          schema:
+            $ref: '#/definitions/SucEmpHabDto'
+          headers: {}
+  /iungam/empresas:
+    get:
+      description: ''
+      summary: getEmpresas
+      tags:
+        - iungam-controller
+      operationId: getEmpresas
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: tipoCobranza
+          in: query
+          required: false
+          type: array
+          items:
+            type: string
+          description: ''
+        - name: idRubro
+          in: query
+          required: false
+          type: string
+          description: ''
+        - name: idAgente
+          in: query
+          required: false
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: default response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/EmpresaDto'
+          headers: {}
+  '/rubros/codigo/{codigo}':
+    get:
+      description: ''
+      summary: getRubroByCodigo
+      tags:
+        - rubro-controller
+      operationId: getRubroByCodigo
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: codigo
+          in: path
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: default response
+          schema:
+            $ref: '#/definitions/RubroDto'
+          headers: {}
+  '/rubros/id/{id}':
+    get:
+      description: ''
+      summary: getRubro
+      tags:
+        - rubro-controller
+      operationId: getRubro
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: default response
+          schema:
+            $ref: '#/definitions/RubroDto'
+          headers: {}
+  /rubros:
+    get:
+      description: ''
+      summary: getRubros
+      tags:
+        - rubro-controller
+      operationId: getRubros
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: default response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RubroDto'
+          headers: {}
+  /rubros/updateAll:
+    put:
+      description: ''
+      summary: updateAll
+      tags:
+        - rubro-controller
+      operationId: updateAll
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: default response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RubroDto'
+          headers: {}
+definitions:
+  MultiValueMapStringString:
+    title: MultiValueMapStringString
+    type: object
+    properties:
+      all:
+        type: object
+        additionalProperties:
+          type: string
+      empty:
+        type: boolean
+  BarraLoteRequest:
+    title: BarraLoteRequest
+    type: object
+    properties:
+      barras:
+        type: array
+        items:
+          $ref: '#/definitions/BarraRequest'
+      tiposCobranza:
+        type: array
+        items:
+          type: string
+    required:
+      - barras
+  BarraRequest:
+    title: BarraRequest
+    type: object
+    properties:
+      barra:
+        type: string
+      idEmpresa:
+        type: string
+      idModalidad:
+        type: string
+    required:
+      - barra
+  ModalidadEmpresa:
+    title: ModalidadEmpresa
+    type: object
+    properties:
+      id:
+        type: string
+      descripcion:
+        type: string
+      tipoCobranza:
+        type: string
+  EmpresaCentralDtoResponse:
+    title: EmpresaCentralDtoResponse
+    type: object
+    properties:
+      codigo:
+        type: string
+      descripcion:
+        type: string
+  EmpHabDto:
+    title: EmpHabDto
+    type: object
+    properties:
+      codigo:
+        type: integer
+        format: int32
+      descripcion:
+        type: string
+      tope:
+        $ref: '#/definitions/TopeEmpHabDto'
+      modalidades:
+        type: array
+        items:
+          $ref: '#/definitions/ModalidadEmpHabDto'
+  FormaPagoEmpHabDto:
+    title: FormaPagoEmpHabDto
+    type: object
+    properties:
+      codTipoValor:
+        type: string
+      descTipoValor:
+        type: string
+  ModalidadEmpHabDto:
+    title: ModalidadEmpHabDto
+    type: object
+    properties:
+      id:
+        type: string
+      descripcion:
+        type: string
+      habilitaAnulacion:
+        type: string
+      esRecarga:
+        type: string
+      tipoCobranza:
+        type: string
+      cobroOnline:
+        type: string
+      esPago:
+        type: string
+      valores:
+        type: array
+        items:
+          $ref: '#/definitions/FormaPagoEmpHabDto'
+  SucEmpHabDto:
+    title: SucEmpHabDto
+    type: object
+    properties:
+      id:
+        type: string
+      nombre:
+        type: string
+      empresas:
+        type: array
+        items:
+          $ref: '#/definitions/EmpHabDto'
+  TopeEmpHabDto:
+    title: TopeEmpHabDto
+    type: object
+    properties:
+      maximoNegativo:
+        type: number
+        format: double
+      minimoNegativo:
+        type: number
+        format: double
+      minimoPositivo:
+        type: number
+        format: double
+      maximoPositivo:
+        type: number
+        format: double
+      minimoAbsoluto:
+        type: number
+        format: double
+      maximoAbsoluto:
+        type: number
+        format: double
+      minimoPorcentual:
+        type: number
+        format: double
+      maximoPorcentual:
+        type: number
+        format: double
+  DfCampoCodigoBarrasDto:
+    title: DfCampoCodigoBarrasDto
+    allOf:
+      - $ref: '#/definitions/DfCampoDto'
+      - type: object
+        properties:
+          funcionDependencia:
+            type: string
+          fcbsHabilitados:
+            type: array
+            items:
+              type: string
+  DfCampoDto:
+    title: DfCampoDto
+    discriminator: type
+    type: object
+    properties:
+      etiqueta:
+        type: string
+      posicion:
+        type: integer
+        format: int32
+      codigoTipoDato:
+        type: string
+      idTipoComponenteVisual:
+        $ref: '#/definitions/IdTipoComponenteVisual'
+      funcionCalculo:
+        type: string
+      nombre:
+        type: string
+      longitud:
+        type: integer
+        format: int32
+      idFormaSeparacionCampos:
+        $ref: '#/definitions/IdFormaSeparacionCampos'
+      esVisible:
+        type: boolean
+      type:
+        type: string
+    required:
+      - type
+  DfCampoEdicionDto:
+    title: DfCampoEdicionDto
+    allOf:
+      - $ref: '#/definitions/DfCampoDto'
+      - type: object
+        properties:
+          funcionDependencia:
+            type: string
+          funcionValidacion:
+            type: string
+          mensajeValidacion:
+            type: string
+  DfCampoFocusableDto:
+    title: DfCampoFocusableDto
+    allOf:
+      - $ref: '#/definitions/DfCampoDto'
+      - type: object
+        properties:
+          funcionDependencia:
+            type: string
+  DfCampoSelectorDto:
+    title: DfCampoSelectorDto
+    allOf:
+      - $ref: '#/definitions/DfCampoDto'
+      - type: object
+        properties:
+          funcionDependencia:
+            type: string
+          listaValores:
+            type: string
+  EmpresaRecarga:
+    title: EmpresaRecarga
+    type: object
+    properties:
+      id:
+        type: string
+      codigo:
+        type: string
+      descripcion:
+        type: string
+      idModalidad:
+        type: string
+      minimoRecarga:
+        type: number
+        format: double
+      maximoRecarga:
+        type: number
+        format: double
+      camposFormulario:
+        type: array
+        items:
+          $ref: '#/definitions/DfCampoDto'
+      barraEscritura:
+        type: string
+      idCodigoBarra:
+        type: string
+  EmpresaFactura:
+    title: EmpresaFactura
+    type: object
+    properties:
+      id:
+        type: string
+      codigo:
+        type: string
+      descripcion:
+        type: string
+  EmpresaCentralDto:
+    title: EmpresaCentralDto
+    type: object
+    properties:
+      id:
+        type: string
+  EmpresaDto:
+    title: EmpresaDto
+    type: object
+    properties:
+      id:
+        type: string
+      codigo:
+        type: integer
+        format: int32
+      descripcion:
+        type: string
+      idRubro:
+        type: array
+        items:
+          type: string
+      tope:
+        $ref: '#/definitions/TopeDto'
+      modalidades:
+        type: array
+        items:
+          $ref: '#/definitions/ModalidadDto'
+      empresasCentrales:
+        type: array
+        items:
+          $ref: '#/definitions/EmpresaCentralDto'
+  FormatoTicketDto:
+    title: FormatoTicketDto
+    type: object
+    properties:
+      codigoTicket:
+        type: string
+      leyenda1:
+        type: string
+      leyenda2:
+        type: string
+  ModalidadDto:
+    title: ModalidadDto
+    type: object
+    properties:
+      id:
+        type: string
+      moneda:
+        $ref: '#/definitions/MonedaDto'
+      formatoTicket:
+        $ref: '#/definitions/FormatoTicketDto'
+      cantidadTickets:
+        type: number
+        format: double
+      descripcion:
+        type: string
+      codOperatoria:
+        type: string
+      tipoCobranza:
+        type: string
+      tipoImputacion:
+        type: string
+      anulacion:
+        type: boolean
+      recarga:
+        type: boolean
+      online:
+        type: boolean
+      aceptaDuplicado:
+        type: boolean
+      cantidadDiasAviso:
+        description: Este campo puede venir nulo
+        type: integer
+        format: int32
+      nombreEmpresaTicket:
+        type: string
+      formateadorDatoAdicional:
+        $ref: '#/definitions/FormateadorDatoAdicional'
+      tipoCtrolDuplicado:
+        description: Este campo puede venir nulo
+        type: number
+        format: double
+      cantTransDuplicado:
+        description: Este campo puede venir nulo
+        type: number
+        format: double
+      idModalidadGenerica:
+        type: string
+      idEmpresaGenerica:
+        type: string
+      recargaCelular:
+        type: boolean
+  MonedaDto:
+    title: MonedaDto
+    type: object
+    properties:
+      descripcion:
+        type: string
+      signoMonetario:
+        type: string
+      formatoConSigno:
+        type: string
+      formatoSinSigno:
+        type: string
+      esMonedaDefault:
+        type: boolean
+  TopeDto:
+    title: TopeDto
+    type: object
+    properties:
+      topeCobroMaximo:
+        type: number
+        format: double
+      topeCobroMinimo:
+        type: number
+        format: double
+      topeMinimoNegativo:
+        type: number
+        format: double
+      topeMaximoNegativo:
+        type: number
+        format: double
+  MonedaEP:
+    title: MonedaEP
+    type: object
+    properties:
+      id:
+        type: string
+      descripcion:
+        type: string
+      signoMonetario:
+        type: string
+      formatoConSigno:
+        type: string
+      formatoSinSigno:
+        type: string
+      esMonedaDefault:
+        type: boolean
+  TipoValorEP:
+    title: TipoValorEP
+    type: object
+    properties:
+      id:
+        type: string
+      idMoneda:
+        type: string
+      descripcion:
+        type: string
+      codigo:
+        type: string
+      clase:
+        $ref: '#/definitions/Clase'
+      porcentajeTope:
+        type: number
+        format: double
+      porcentajeTopeSoloDebito:
+        type: number
+        format: double
+      tipoValorDefault:
+        type: boolean
+  FacturaSimple:
+    title: FacturaSimple
+    description: Factura simple
+    type: object
+    properties:
+      barra:
+        type: string
+      idCodigoBarra:
+        type: string
+      idCliente:
+        type: string
+      modalidad:
+        $ref: '#/definitions/ModalidadFactura'
+      empresaPuesto:
+        $ref: '#/definitions/EmpresaFactura'
+      tipoImporte:
+        $ref: '#/definitions/TipoImporte'
+      vencimientos:
+        type: array
+        items:
+          $ref: '#/definitions/VencimientoFactura'
+      nroVencimientoCorriente:
+        type: integer
+        format: int32
+      vencida:
+        type: boolean
+      details:
+        type: array
+        items:
+          $ref: '#/definitions/ItemGrilla'
+      nroReferencia:
+        type: string
+      datoAdicional:
+        type: string
+      idEmpresaCentral:
+        type: string
+      diasClearing:
+        type: integer
+        format: int32
+      plazoAdicional:
+        type: integer
+        format: int32
+      hash:
+        type: string
+  ItemGrilla:
+    title: ItemGrilla
+    description: Item grilla
+    type: object
+    properties:
+      campo:
+        type: string
+      titulo:
+        type: string
+      valor:
+        type: string
+  ModalidadFactura:
+    title: ModalidadFactura
+    type: object
+    properties:
+      id:
+        type: string
+      descripcion:
+        type: string
+      codOperatoria:
+        type: string
+      tipoCobranza:
+        type: string
+      tipoImputacion:
+        type: string
+      anulacion:
+        type: boolean
+      recarga:
+        type: boolean
+      online:
+        type: boolean
+      cantidadDiasAviso:
+        type: integer
+        format: int32
+      tipoControlDuplicado:
+        type: string
+      formatoTicket:
+        $ref: '#/definitions/FormatoTicketDto'
+  VencimientoFactura:
+    title: VencimientoFactura
+    description: Vencimiento de la factura
+    type: object
+    properties:
+      fechaVencimiento:
+        type: string
+        format: date
+      importe1Sugerido:
+        type: number
+        format: double
+      importe1Minimo:
+        type: number
+        format: double
+      importe1Maximo:
+        type: number
+        format: double
+      importe2Sugerido:
+        type: number
+        format: double
+  CodedError:
+    title: CodedError
+    type: object
+    properties:
+      codigo:
+        type: string
+      mensaje:
+        type: string
+      causas:
+        type: array
+        items:
+          $ref: '#/definitions/CodedError'
+      esParaUsuarioFinal:
+        type: boolean
+  FormularioItemRequestEP:
+    title: FormularioItemRequestEP
+    description: Item de formulario de cobranza abierta
+    type: object
+    properties:
+      codEmpresa:
+        example: 37
+        type: string
+      idModalidad:
+        example: 0812030936zinYHxkcEi
+        type: string
+      fechaHoraLectura:
+        type: string
+        format: date-time
+      tipo:
+        description: >-
+          Indica si es un item CLR (item de cobro con barra), CSF (item de cobro
+          sin factura) o FORM (item de cobro abierto)
+        type: string
+      formulario:
+        type: object
+        additionalProperties:
+          type: string
+    required:
+      - codEmpresa
+      - idModalidad
+      - fechaHoraLectura
+      - tipo
+      - formulario
+  PagoAbiertoRequestEP:
+    title: PagoAbiertoRequestEP
+    type: object
+    properties:
+      item:
+        $ref: '#/definitions/FormularioItemRequestEP'
+      formaPago:
+        description: Forma de pago
+        type: string
+    required:
+      - item
+      - formaPago
+  AgenteEP:
+    title: AgenteEP
+    type: object
+    properties:
+      idAgente:
+        type: string
+      codAgente:
+        example: 1124
+        type: string
+    required:
+      - idAgente
+      - codAgente
+  ItemResponseEP:
+    title: ItemResponseEP
+    description: Tipos de items de cobranza
+    type: object
+    properties:
+      tipo:
+        type: string
+      idModalidad:
+        type: string
+      importe:
+        type: number
+        format: double
+      importeAPagar:
+        type: number
+        format: double
+      idBarra:
+        type: string
+      idCliente:
+        type: string
+      idEmpresa:
+        type: string
+      codEmpresa:
+        type: string
+      barra:
+        type: string
+      idEmpresaCentral:
+        type: string
+      fechaVencimiento1:
+        type: string
+        format: date
+      diasClearing:
+        type: integer
+        format: int32
+      plazoAdicional:
+        type: integer
+        format: int32
+      tipoControlDuplicado:
+        type: string
+      numeroVencimiento:
+        type: integer
+        format: int32
+      referencia:
+        type: string
+      datoAdicional:
+        type: string
+      claveBusqueda:
+        type: string
+      formulario:
+        type: object
+        additionalProperties:
+          type: string
+      tipoRecarga:
+        type: string
+      formatoTicket:
+        $ref: '#/definitions/FormatoTicketDto'
+  SucursalEP:
+    title: SucursalEP
+    type: object
+    properties:
+      idSucursal:
+        type: string
+      codSucursal:
+        example: 11024
+        type: string
+    required:
+      - idSucursal
+      - codSucursal
+  ValidacionResponseEP:
+    title: ValidacionResponseEP
+    description: Respuesta de validacion para poder hacer la cobranza
+    type: object
+    properties:
+      item:
+        $ref: '#/definitions/ItemResponseEP'
+      sucursal:
+        $ref: '#/definitions/SucursalEP'
+      agente:
+        $ref: '#/definitions/AgenteEP'
+  FacturaItemRequestEP:
+    title: FacturaItemRequestEP
+    description: items de facturas para cobranza con barra o cobranza sin factura
+    type: object
+    properties:
+      codEmpresa:
+        example: 37
+        type: string
+      idModalidad:
+        example: 0812030936zinYHxkcEi
+        type: string
+      fechaHoraLectura:
+        type: string
+        format: date-time
+      tipo:
+        description: >-
+          Indica si es un item CLR (item de cobro con barra), CSF (item de cobro
+          sin factura) o FORM (item de cobro abierto)
+        type: string
+      barra:
+        description: Requerida para cobranza de factura con barras y cobranza sin factura
+        type: string
+      importe:
+        description: Importe a pagar
+        example: 308.58
+        type: number
+        format: double
+      idCliente:
+        example: 12223354
+        type: string
+      referencia:
+        description: Requerida solo para cobranza sin factura
+        type: string
+      datoAdicional:
+        description: Requerida solo para cobranza sin factura
+        type: string
+      formulario:
+        description: Requerida solo para cobranza sin factura
+        type: object
+        additionalProperties:
+          type: string
+      hash:
+        type: string
+    required:
+      - codEmpresa
+      - idModalidad
+      - fechaHoraLectura
+      - tipo
+      - barra
+      - importe
+      - idCliente
+  PagoFacturaRequestEP:
+    title: PagoFacturaRequestEP
+    type: object
+    properties:
+      item:
+        $ref: '#/definitions/FacturaItemRequestEP'
+      formaPago:
+        description: Forma de pago
+        type: string
+    required:
+      - item
+      - formaPago
+  DescriptorFormularioDto:
+    title: DescriptorFormularioDto
+    type: object
+    properties:
+      titulo:
+        type: string
+      descriptoresCamposFormulario:
+        type: array
+        items:
+          $ref: '#/definitions/DfCampoDto'
+      funcionValidacion:
+        type: string
+      mensajeValidacion:
+        type: string
+      idCodigoBarra:
+        type: string
+      categoriaRdi:
+        $ref: '#/definitions/CategoriaRdi'
+    required:
+      - descriptoresCamposFormulario
+  RubroDto:
+    title: RubroDto
+    type: object
+    properties:
+      id:
+        type: string
+      descripcion:
+        type: string
+      codigo:
+        type: string
+  CategoriaRdi:
+    title: CategoriaRdi
+    type: string
+    enum:
+      - COBRANZA_CERRADO
+      - COBRANZA_SEMIABIERTO
+      - COBRANZA_SEMIABIERTO_LIMITE_SUPERIOR
+      - COBRANZA_SEMIABIERTO_LIMITE_INFERIOR
+      - REINTEGRO_CERRADO
+      - REINTEGRO_SEMIABIERTO
+      - REINTEGRO_SEMIABIERTO_LIMITE_SUPERIOR
+      - REINTEGRO_SEMIABIERTO_LIMITE_INFERIOR
+      - COBRANZA_ABIERTA_CUANDO_IMPORTE_ES_CERO
+      - COBRANZA_DINERO_MAIL
+  Clase:
+    title: Clase
+    type: string
+    enum:
+      - EFECTIVO
+      - CHEQUE
+      - TARJETA_CREDITO
+      - DEBITO
+      - REINTEGRO_CHEQUE
+      - REINTEGRO_TARJETA
+      - REINTEGRO
+      - CHEQUE_PROPIO
+      - PATACON
+      - FONDO_PROPIO
+      - TARJETA_DEBITO_LINK
+      - TARJETA_DEBITO_PRISMA
+      - MONEDA_RAPICLUB
+      - MONEDA_MIXTA
+  FormateadorDatoAdicional:
+    title: FormateadorDatoAdicional
+    type: string
+    enum:
+      - CBF
+      - CCR
+      - CRH
+      - DRF
+      - CTE
+      - DAF
+      - RAB
+      - ABR
+  IdFormaSeparacionCampos:
+    title: IdFormaSeparacionCampos
+    type: string
+    enum:
+      - MISMA_LINEA
+      - SIGUIENTE_LINEA
+      - SIGUIENTE_RECUADRO
+  IdTipoComponenteVisual:
+    title: IdTipoComponenteVisual
+    type: string
+    enum:
+      - TEXT_FIELD
+      - COMBO_BOX_ESTATICO
+      - COMBO_BOX_DINAMICO
+      - LABEL
+      - CHECK_BOX
+      - HIDDEN_TEXT_FIELD
+  TipoImporte:
+    title: TipoImporte
+    type: string
+    enum:
+      - COBRANZA_CERRADO
+      - COBRANZA_SEMIABIERTO
+      - COBRANZA_SEMIABIERTO_LIMITE_SUPERIOR
+      - COBRANZA_SEMIABIERTO_LIMITE_INFERIOR
+      - REINTEGRO_CERRADO
+      - REINTEGRO_SEMIABIERTO
+      - REINTEGRO_SEMIABIERTO_LIMITE_SUPERIOR
+      - REINTEGRO_SEMIABIERTO_LIMITE_INFERIOR
+      - COBRANZA_ABIERTA_CUANDO_IMPORTE_ES_CERO
+      - COBRANZA_DINERO_MAIL
+tags:
+  - name: interpretador-controller
+  - name: empresas-controller
+  - name: tipo-valor-controller
+  - name: facturas-controller
+  - name: formulario-factura-ausente-controller
+  - name: iungam-controller
+  - name: rubro-controller
+x-ibm-configuration:
+  gateway: datapower-api-gateway
+  type: rest
+  phase: realized
+  enforced: true
+  testable: true
+  assembly:
+    execute:
+      - map:
+          version: 2.0.0
+          title: map
+          inputs: {}
+          outputs:
+            Accept:
+              schema:
+                type: string
+              variable: message.headers.accept
+          actions:
+            - set: Accept
+              default: '*/*'
+      - invoke:
+          title: invoke
+          version: 2.0.0
+          verb: keep
+          target-url: $(target-url)$(request.path)$(request.search)
+          header-control:
+            type: blocklist
+            values: []
+          parameter-control:
+            type: blocklist
+            values: []
+  properties:
+    target-url:
+      value: 'http://empresas-billing.apps.ocp.prod.gire.com'
+      description: The URL of the target service
+      encoded: false
+  cors:
+    enabled: true
+  activity-log:
+    enabled: true
+    error-content: header
+    success-content: activity
+  application-authentication:
+    certificate: false
+  catalogs:
+    produccion:
+      properties:
+        target-url: 'http://empresas-billing.apps.ocp.prod.gire.com'
+securityDefinitions:
+  Oauth:
+    type: oauth2
+    flow: application
+    x-ibm-oauth-provider: oauth-rapipago
+    tokenUrl: 'https://$(oauth-url)/oauth-rapipago/oauth2/token'
+    scopes:
+      openid: ''
+  clientIdHeader:
+    type: apiKey
+    name: client-Id
+    in: header
+    x-key-type: client_id
+security:
+  - Oauth:
+      - openid
