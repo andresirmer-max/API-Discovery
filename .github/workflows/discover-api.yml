@@ -6,7 +6,6 @@ env:
   API_HOST: apps.itz-7yke1v.tzaas.techzone.ibm.com
   PLATFORM_API_PREFIX: dev-mgmt-platform-api-apic-dev
   PROVIDER_ORG: ibm
-  INSECURE_SKIP_TLS_VERIFY: True
   API_FOLDERS: APIs
 
 jobs:
@@ -27,6 +26,7 @@ jobs:
         api_key: ${{ secrets.apicApikey }}
         api_folders: ${{ env.API_FOLDERS }}
         resync_check: ${{ true }}
+        insecure_skip_tls_verify: ${{ true }}
         git_diff: ${{ steps.difference-output.outputs.action_updates }}
     - name: Display the action-result
       run: |
