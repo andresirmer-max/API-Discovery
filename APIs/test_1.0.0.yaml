@@ -1,0 +1,93 @@
+swagger: '2.0'
+info:
+  title: Test
+  x-ibm-name: test
+  version: 1.0.0
+schemes:
+  - https
+basePath: /test
+x-ibm-configuration:
+  cors:
+    enabled: true
+  gateway: datapower-api-gateway
+  type: rest
+  phase: realized
+  enforced: true
+  testable: true
+  assembly:
+    execute:
+      - map:
+          version: 2.0.0
+          title: map
+          inputs:
+            nombre:
+              schema:
+                type: string
+              variable: request.parameters.nombre
+          outputs:
+            response:
+              schema:
+                $ref: '#/definitions/response'
+              variable: message.body
+          actions:
+            - set: response.valor
+              from: nombre
+              value: '"Hola " + $(nombre) + " !"'
+  properties:
+    target-url:
+      value: 'http://example.com/operation-name'
+      description: The URL of the target service
+      encoded: false
+  application-authentication:
+    certificate: false
+definitions:
+  body_introspect:
+    description: ''
+    type: object
+    properties:
+      scope:
+        type: string
+      active:
+        type: boolean
+      token_type:
+        type: string
+      exp:
+        type: number
+      iat:
+        type: number
+      client_id:
+        type: string
+      username:
+        type: string
+    example: >-
+      {"scope":"scope1","active":true,"token_type":"bearer","exp":1635279946,"iat":1635276346,"client_id":"bRsKdNbwtHGqkFSQ3grN","username":"brskdnbwthgqkfsq3grn"}
+  response:
+    type: object
+    properties:
+      valor:
+        type: string
+paths:
+  /test:
+    get:
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/response'
+      consumes: []
+      produces: []
+      security:
+        - key: []
+    parameters:
+      - in: query
+        required: true
+        name: nombre
+        type: string
+securityDefinitions:
+  key:
+    type: apiKey
+    name: client_id
+    x-key-type: client_id
+    in: header
+security: []
+responses: {}
