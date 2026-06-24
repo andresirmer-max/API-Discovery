@@ -1,0 +1,42 @@
+info:
+  version: 1.0.0
+  title: Pokemon
+  name: pokemon
+gateways:
+  - datapower-api-gateway
+plans:
+  default-plan:
+    title: Default Plan
+    description: Default Plan
+    rate-limits:
+      default:
+        value: 200/1hour
+    apis:
+      pokemon-demo-api1.0.0: {}
+  1000tps:
+    title: 1000TPS
+    approval: true
+    rate-limits:
+      Default rate-limit:
+        value: 1000/1minute
+        hard-limit: false
+    burst-limits:
+      Default burst-limit:
+        value: 100/1second
+    apis:
+      pokemon-demo-api1.0.0: {}
+apis:
+  pokemon-demo-api1.0.0:
+    $ref: pokemon-demo-api_1.0.0.yaml
+visibility:
+  view:
+    type: authenticated
+    orgs: []
+    tags: []
+    enabled: true
+  subscribe:
+    type: authenticated
+    orgs: []
+    tags: []
+    enabled: true
+product: 1.0.0
