@@ -1,0 +1,50 @@
+{
+  "nodes": [
+    {
+      "id": "1ec98240-3d19-442a-90f8-861e8301c447:0",
+      "projectId": "EDEzaDMB",
+      "filePath": "Proyecto/miapi-spec.yml",
+      "docIndex": 0,
+      "assetType": "support",
+      "lastIndexed": 1782412224347,
+      "schemaVersion": 1
+    },
+    {
+      "id": "5b6e6c2b-495b-4efd-8152-e047f1a07e48:0",
+      "projectId": "EDEzaDMB",
+      "filePath": "Proyecto/MiAPI.yaml",
+      "docIndex": 0,
+      "assetType": "resource",
+      "lastIndexed": 1782412225871,
+      "schemaVersion": 1,
+      "kind": "API",
+      "name": "MiAPI",
+      "namespace": "Proyecto",
+      "version": "1.0",
+      "contentHash": "0f66f49f0b334db3"
+    },
+    {
+      "id": "e0b1b7c2-5a30-46ee-9228-d8b5ab83806c:0",
+      "projectId": "EDEzaDMB",
+      "filePath": "Proyecto/.project-index",
+      "docIndex": 0,
+      "assetType": "support",
+      "lastIndexed": 1782412171566,
+      "schemaVersion": 1
+    }
+  ],
+  "edges": [
+    {
+      "id": "0ce873a1-9066-495b-b6dd-de451215d386",
+      "projectId": "EDEzaDMB",
+      "sourceNodeId": "5b6e6c2b-495b-4efd-8152-e047f1a07e48:0",
+      "targetNodeId": "1ec98240-3d19-442a-90f8-861e8301c447:0",
+      "targetRefType": "same-project",
+      "targetRefString": "./miapi-spec.yml",
+      "targetRefKind": "support",
+      "isValid": true,
+      "createdAt": 1782412225881,
+      "lastValidated": 1782412225881
+    }
+  ]
+}
